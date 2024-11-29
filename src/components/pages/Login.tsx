@@ -3,6 +3,7 @@ import { ChangeEvent, FC, memo, useState } from "react";
 
 import { PrimaryButton } from "../atoms/Button/PrimaryButton";
 import { useAuth } from "../../hooks/useAuth";
+import { Helmet } from "react-helmet-async";
 
 export const Login:FC = memo(() => {
     const { login, loading} = useAuth();
@@ -14,6 +15,9 @@ export const Login:FC = memo(() => {
 
     return (
         <>
+            <Helmet>
+                <title>ログイン | ユーザー管理アプリ</title>
+            </Helmet>
             <Flex align="center" justify="center" height="100vh" bg={"gray.200"}>
                 <Box bg="white" w="sm" p={4} borderRadius="md" shadow={"md"}>
                     <Heading as="h1" size={"lg"} textAlign={"center"}>ユーザー管理アプリ</Heading>
