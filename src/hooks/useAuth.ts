@@ -4,10 +4,12 @@ import { useHistory } from "react-router-dom";
 
 import { User } from "../types/api/user";
 import { useMessage } from "./useMessage";
+import { useLoginUser } from "./useLoginUser";
 
 export const useAuth = () => {
     const history = useHistory();
     const {showMessage} = useMessage();
+    const { setLoginUser } = useLoginUser();
 
     const [loading, setLoading] = useState(false);
 
@@ -16,13 +18,17 @@ export const useAuth = () => {
         axios.get<User>(`https://jsonplaceholder.typicode.com/users/${id}`)
             .then(res => {
                 if (res.data) {
-                    showMessage({title: "ログインしました", status:"success"})
+                    setLoginUser(res.data);
+                    showMessage({title: "ログインしました", status:"success"});
                     history.push("/home");
                 } else {
-                    showMessage({title: "ユーザーが見つかりません", status:"error"})
+                    showMessage({title: "ユーザーが見つかりません", status:"error"});
+                    setLoading(false);
                 }
-            }).catch(() => showMessage({title: "ログインできません", status:"error"})        )
-            .finally(() => setLoading(false));
+            }).catch(() => {
+                showMessage({title: "ログインできません", status:"error"})
+                setLoading(false);
+            });
     }, [history, showMessage]);
 
     return {login, loading}
